@@ -161,11 +161,21 @@ Golang import:
 import "gopkg.in/confluentinc/confluent-kafka-go.v1/kafka"
 ```
 
-**Note:** that the development of librdkafka and the Go client are kept in synch.
-If you use the master branch of the Go client, then you need to use the master branch of
-librdkafka.
+librdkafka is included with the Go client and does not have to be installed
+separately on the build, nor target, system.
+
+
+**Dynamic linking:** If you prefer to link librdkafka dynamically, which requires
+librdkafka to be installed on your system, you should build your application with `go build -tags dynamic`.
+The development of librdkafka and the Go client are kept in synch.
+If you use the master branch of the Go client, then you need to use the master branch of librdkafka.
+
+**GSSAPI/Kerberos support:** The bundled librdkafka does not support GSSAPI/Kerberos,
+instead install librdkafka [packages from Confluent](https://docs.confluent.io/current/installation/installing_cp/index.html) or [source](https://github.com/edenhill/librdkafka) and then follow the **Dynamic linking** instructions above (`-tags dynamic`).
+
 
 See the [examples](examples) for usage details.
+
 
 
 API Strands
@@ -255,32 +265,6 @@ Cons:
  * Somewhat slower than the channel producer.
 
 See [examples/producer_example](examples/producer_example)
-
-
-Static Builds
-=============
-
-**NOTE**: Requires pkg-config
-
-To link your application statically with librdkafka append `-tags static` to
-your application's `go build` command, e.g.:
-
-    $ cd kafkatest/go_verifiable_consumer
-    $ go build -tags static
-
-This will create a binary with librdkafka statically linked, do note however
-that any librdkafka dependencies (such as ssl, sasl2, lz4, etc, depending
-on librdkafka build configuration) will be linked dynamically and thus required
-on the target system.
-
-To create a completely static binary append `-tags static_all` instead.
-This requires all dependencies to be available as static libraries
-(e.g., libsasl2.a). Static libraries are typically not installed
-by default but are available in the corresponding `..-dev` or `..-devel`
-packages (e.g., libsasl2-dev).
-
-After a succesful static build verify the dependencies by running
-`ldd ./your_program` (or `otool -L ./your_program` on OSX), librdkafka should not be listed.
 
 
 Tests
