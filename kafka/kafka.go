@@ -150,6 +150,11 @@ import (
 )
 
 /*
+#cgo CFLAGS: -I../libs/include
+#cgo linux LDFLAGS: -L../libs/linux
+#cgo darwin LDFLAGS: -L../libs/darwin
+#cgo LDFLAGS: -lrdkafka -lz -lzstd
+
 #include <stdlib.h>
 #include <string.h>
 #include <librdkafka/rdkafka.h>

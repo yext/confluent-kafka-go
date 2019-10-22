@@ -1,0 +1,52 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "00version.go",
+        "adminapi.go",
+        "adminoptions.go",
+        "build_dynamic.go",
+        "config.go",
+        "consumer.go",
+        "error.go",
+        "event.go",
+        "generated_errors.go",
+        "glue_rdkafka.h",
+        "handle.go",
+        "header.go",
+        "kafka.go",
+        "message.go",
+        "metadata.go",
+        "misc.go",
+        "offset.go",
+        "producer.go",
+        "testhelpers.go",
+    ],
+    cgo = True,
+    cdeps = ["//libs:librdkafka"],
+    importpath = "github.com/yext/confluent-kafka-go/kafka",
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "adminapi_test.go",
+        "config_test.go",
+        "consumer_performance_test.go",
+        "consumer_test.go",
+        "error_test.go",
+        "event_test.go",
+        "header_test.go",
+        "integration_test.go",
+        "kafka_test.go",
+        "message_test.go",
+        "metadata_test.go",
+        "producer_performance_test.go",
+        "producer_test.go",
+        "stats_event_test.go",
+        "testhelpers_test.go",
+    ],
+    embed = [":go_default_library"],
+)
